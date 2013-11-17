@@ -19,6 +19,11 @@ describe ItunesTrack do
     it 'returns number of tracks at iTunes' do
       expect(ITunesTrack.size).to be >= 1000
     end
+
+    it 'returns number of tracks for ABBA' do
+      size = ITunesTrack.size { |t| t.artist.get.match /ABBA/ }
+      expect(size).to eq 1
+    end
   end
 
   describe '.track_properties' do
@@ -34,6 +39,16 @@ describe ItunesTrack do
       it 'builds track objects with name and artist attrs' do
         ITunesTrack.build(:name,:artist)
         expect(ITunesTrack.tracks.all? { |t| t.is_a? ITunesTrack }).to be_true
+      end
+    end
+
+    context 'with a block' do
+      it 'builds track objects under the block condition' do
+        ITunesTrack.build(:name, :artist) do |t|
+          t.artist.get.match /beatles/i
+        end
+        expect(ITunesTrack.tracks.size).to be <= 300
+        expect(ITunesTrack.tracks.all? { |t| t.artist.match /beatles/i }).to be_true
       end
     end
   end

@@ -9,11 +9,11 @@ class ItunesTrack < OpenStruct
 
   ATTRS = %i(name time artist album genre rating played_count year composer track_count track_number disc_count disc_number played_count lyrics)
   class << self
-    def build(*attrs)
+    def build(*attrs, &blk)
       tracks.clear
       @attrs = attrs.empty? ? ATTRS : attrs
       track_attrs = []
-      itunes_tracks.each do |track|
+      itunes_tracks(&blk).each do |track|
         track_attrs << begin
           @attrs.inject({}) do |h, attr|
             val = track.send(attr).get rescue ''
@@ -28,8 +28,8 @@ class ItunesTrack < OpenStruct
       tracks.push *track_attrs.map { |attrs| new attrs }
     end
 
-    def full_build
-      build(*track_properties)
+    def full_build(&blk)
+      build(*track_properties, &blk)
     end
 
     def tracks
@@ -40,12 +40,12 @@ class ItunesTrack < OpenStruct
       @itunes ||= app('iTunes').tracks
     end
 
-    def itunes_tracks
-      @itunes_tracks ||= itunes.get
+    def itunes_tracks(&blk)
+      block_given? ? itunes.get.select(&blk) : itunes.get
     end
 
-    def size
-      itunes_tracks.size
+    def size(&blk)
+      itunes_tracks(&blk).size
     end
 
     def track_properties
