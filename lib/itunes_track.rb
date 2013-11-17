@@ -10,6 +10,7 @@ class ItunesTrack < OpenStruct
   ATTRS = %i(name time artist album genre rating played_count year composer track_count track_number disc_count disc_number played_count lyrics)
   class << self
     def build(*attrs)
+      tracks.clear
       @attrs = attrs.empty? ? ATTRS : attrs
       track_attrs = []
       itunes_tracks.each do |track|
@@ -48,10 +49,11 @@ class ItunesTrack < OpenStruct
     end
 
     def track_properties
-      itunes.properties
+      itunes.properties.map(&:intern)
     end
 
     def to_csv(path, attrs=@attrs)
+      raise 'Should be build first' if tracks.empty?
       CSV.open(path, 'wb') do |csv|
         csv << attrs
         tracks.each { |t| csv << attrs.map{ |attr| t.send attr } }
