@@ -53,11 +53,13 @@ class ItunesTrack < OpenStruct
     end
 
     def to_csv(path, attrs=@attrs)
-      raise 'Should be build first' if tracks.empty?
+      raise 'Should be built first' if tracks.empty?
       CSV.open(path, 'wb') do |csv|
         csv << attrs
         tracks.each { |t| csv << attrs.map{ |attr| t.send attr } }
       end
+    rescue => e
+      puts "Something go wrong during csv building: #{e}"
     end
   end
 end
