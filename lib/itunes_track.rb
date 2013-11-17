@@ -2,6 +2,8 @@ require 'appscript'
 require 'csv'
 require 'ostruct'
 
+require 'itunes_track/cli'
+
 include Appscript
 
 class ItunesTrack < OpenStruct

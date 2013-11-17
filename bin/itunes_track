@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 
 require 'itunes_track'
+
+ITunesTrack::CLI.start(ARGV)
