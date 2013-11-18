@@ -44,9 +44,16 @@ class ItunesTrack
         else
           ->t{ true }
         end
+      puts "I am working on csv..."
       ItunesTrack.build(*fields, &cond)
       ItunesTrack.to_csv(path, fields)
       puts "CSV file successfully created at #{path}."
     end
+
+    desc "version", "Show ItunesTrack version"
+    def version
+      puts "ItunesTrack #{ItunesTrack::VERSION} (c) 2013 kyoendo"
+    end
+    map "-v" => :version
   end
 end
