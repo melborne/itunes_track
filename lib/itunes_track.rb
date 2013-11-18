@@ -7,7 +7,7 @@ require 'itunes_track/version'
 include Appscript
 
 class ItunesTrack
-  ATTRS = %i(name time artist album genre rating played_count year composer track_count track_number disc_count disc_number played_count lyrics)
+  ATTRS = %i(name time artist album genre rating played_count year composer track_count track_number disc_count disc_number lyrics)
 
   require 'itunes_track/cli'
 

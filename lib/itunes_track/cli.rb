@@ -2,7 +2,7 @@ require 'thor'
 
 class ItunesTrack
   class CLI < Thor
-    desc "size ARTIST", "Show track size for ARTIST match"
+    desc "size [ARTIST]", "Show track size for ARTIST match"
     def size(artist=nil)
       cond = artist ? ->t{ t.artist.get.match /#{artist}/i } : ->t{ true }
       puts ItunesTrack.size(&cond)
