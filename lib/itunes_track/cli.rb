@@ -23,9 +23,30 @@ class ItunesTrack
         cond = ->t{ true }
       end
       attrs = %i(name time artist album played_count)
-      ItunesTrack.itunes_tracks(&cond).map do |t|
-        puts attrs.inject("") { |str, attr| [str, t.send(attr).get.to_s].join(" ") }
+      res = ItunesTrack.itunes_tracks(&cond)
+      unless res.empty?
+        res.map { |t|
+          puts attrs.inject("") { |str, attr| [str, t.send(attr).get.to_s].join(" ") }
+        }
+      else
+        puts "No tracks found"
       end
+    end
+
+    desc "csv PATH", "Create CSV file from tracks data"
+    option :fields, aliases:"-f", default: ItunesTrack::ATTRS.join(",")
+    option :artist, aliases:"-a"
+    def csv(path)
+      fields = options[:fields].split(",")
+      cond =
+        if options[:artist]
+          ->t{ t.artist.get.match(/#{options[:artist]}/i) }
+        else
+          ->t{ true }
+        end
+      ItunesTrack.build(*fields, &cond)
+      ItunesTrack.to_csv(path, fields)
+      puts "CSV file successfully created at #{path}."
     end
   end
 end
