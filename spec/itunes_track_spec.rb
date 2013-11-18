@@ -38,7 +38,7 @@ describe ItunesTrack do
     context 'with :name, :artist arguments' do
       it 'builds track objects with name and artist attrs' do
         ITunesTrack.build(:name,:artist)
-        expect(ITunesTrack.tracks.all? { |t| t.is_a? ITunesTrack }).to be_true
+        expect(ITunesTrack.tracks.all? { |t| t.is_a? ITunesTrack::Track }).to be_true
       end
     end
 

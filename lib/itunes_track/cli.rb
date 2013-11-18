@@ -1,6 +1,6 @@
 require 'thor'
 
-class ItunesTrack < OpenStruct
+class ItunesTrack
   class CLI < Thor
     desc "size ARTIST", "Show track size for ARTIST match"
     def size(artist=nil)

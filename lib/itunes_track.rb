@@ -2,14 +2,18 @@ require 'appscript'
 require 'csv'
 require 'ostruct'
 
-require 'itunes_track/cli'
+require 'itunes_track/version'
 
 include Appscript
 
-class ItunesTrack < OpenStruct
-  VERSION = "0.0.1"
-
+class ItunesTrack
   ATTRS = %i(name time artist album genre rating played_count year composer track_count track_number disc_count disc_number played_count lyrics)
+
+  require 'itunes_track/cli'
+
+  class Track < OpenStruct
+  end
+
   class << self
     def build(*attrs, &blk)
       tracks.clear
@@ -27,7 +31,7 @@ class ItunesTrack < OpenStruct
           end
         end
       end
-      tracks.push *track_attrs.map { |attrs| new attrs }
+      tracks.push *track_attrs.map { |attrs| Track.new attrs }
     end
 
     def full_build(&blk)
@@ -67,3 +71,4 @@ class ItunesTrack < OpenStruct
 end
 
 ITunesTrack = ItunesTrack
+
