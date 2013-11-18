@@ -1,6 +1,6 @@
 # ItunesTrack
 
-TODO: Write a gem description
+`ItunesTrack` is a object wrapper of iTunes music tracks. You can get the track information and save them in a CSV file.
 
 ## Installation
 
@@ -18,7 +18,30 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In your terminal, try followings;
+
+    # Show help
+    % itunes_track
+    
+    # Show number of tracks with ARTIST match
+    % itunes_track size beatles
+    
+    # Create CSV file
+    % itunes_track csv itunes.csv
+
+In your ruby script;
+
+```ruby
+require 'itunes_track'
+
+# to build track data for `beatles` with 'name' and 'artist' fields
+ItunesTrack.build(:name, :artist) do |t|
+  t.artist.get.match /beatles/i
+end
+
+# create csv for the builded track data
+ItunesTrack.to_csv('beatles.csv')
+```
 
 ## Contributing
 
